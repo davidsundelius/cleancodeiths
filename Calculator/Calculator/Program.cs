@@ -9,6 +9,12 @@ namespace Calculator
             return a + b;
         }
 
+        public void PrintHelloWorld()
+        {
+            Console.WriteLine("Hello World");
+        }
+
+
 
         static void Main(string[] args)
         {
