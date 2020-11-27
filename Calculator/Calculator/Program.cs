@@ -14,12 +14,17 @@ namespace Calculator
             Console.WriteLine("Hello World");
         }
 
-
+        public string ReadLine(IConsole console)
+        {
+            return console.ReadLine();
+        }
 
         static void Main(string[] args)
         {
-            Program program = new Program();
-            Console.WriteLine("5 + 6 = " + program.Add(5, 6));
+            var program = new Program();
+            IConsole console = new ReadConsole();
+            Console.WriteLine("Test: " + program.ReadLine(console));
+            //Console.WriteLine("5 + 6 = " + program.Add(5, 6));
         }
     }
 }

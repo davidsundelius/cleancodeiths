@@ -34,5 +34,24 @@ namespace CalculatorTests
                 Assert.AreEqual(expected, sw.ToString());
             }
         }
+
+        [TestMethod]
+        /*public void ReadLineTest()
+        {
+            using (StringReader sr = new StringReader("Hello World"))
+            {
+                var program = new Program();
+                Console.SetIn(sr);
+                Assert.AreEqual("Hello World",program.ReadLine());
+            }
+            
+        }*/
+        
+        public void ReadLineTest()
+        {
+            var program = new Program();
+            IConsole console = new MockConsole();
+            Assert.AreEqual("Hello World",program.ReadLine(console));
+        }
     }
 }
