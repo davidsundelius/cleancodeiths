@@ -15,10 +15,10 @@ namespace CurrencyConverterTest
         }
 
         [TestMethod]
-        public void ConvertUSDtoSEKExceptionTest()
+        /*public void ConvertUSDtoSEKExceptionTest()
         {
             Program program = new Program();
             Assert.ThrowsException<System.Exception>(() => program.ConvertUSDtoSEK(-4));
-        }
+        }*/
     }
 }

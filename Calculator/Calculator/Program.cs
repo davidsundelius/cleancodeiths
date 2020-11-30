@@ -14,16 +14,18 @@ namespace Calculator
             Console.WriteLine("Hello World");
         }
 
-        public string ReadLine(IConsole console)
+        public string ReadLineAndMakeUpperCase(IConsole console)
         {
-            return console.ReadLine();
+            var result = console.ReadLine();
+            result += " hello!";
+            return result.ToUpper();
         }
 
         static void Main(string[] args)
         {
             var program = new Program();
             IConsole console = new ReadConsole();
-            Console.WriteLine("Test: " + program.ReadLine(console));
+            Console.WriteLine("Test: " + program.ReadLineAndMakeUpperCase(console));
             //Console.WriteLine("5 + 6 = " + program.Add(5, 6));
         }
     }

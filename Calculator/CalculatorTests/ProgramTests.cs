@@ -32,6 +32,7 @@ namespace CalculatorTests
                 //Assert
                 var expected = string.Format("Hello World{0}", Environment.NewLine);
                 Assert.AreEqual(expected, sw.ToString());
+                
             }
         }
 
@@ -51,7 +52,7 @@ namespace CalculatorTests
         {
             var program = new Program();
             IConsole console = new MockConsole();
-            Assert.AreEqual("Hello World",program.ReadLine(console));
+            Assert.AreEqual("HELLO WORLD HELLO!",program.ReadLineAndMakeUpperCase(console));
         }
     }
 }
