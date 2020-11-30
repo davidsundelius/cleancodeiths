@@ -41,7 +41,7 @@ namespace TollFeeCalculatorTests
             {
                 var actual = Program.TollFeePass(PassingDatesAndPricesRepository.datesAndPrices[i].Item1);
                 var expected = PassingDatesAndPricesRepository.datesAndPrices[i].Item2;
-                //print custom  look at my marking Start test!!
+                
                 Trace.WriteLine("Hello World");
                 Assert.AreEqual(expected, actual);
             }
