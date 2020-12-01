@@ -2,7 +2,7 @@
 
 namespace TollFeeCalculator
 {
-    public class Program
+    public class CalculateTollFee
     {
         static void Main()
         {
