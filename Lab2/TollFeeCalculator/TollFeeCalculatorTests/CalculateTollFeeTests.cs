@@ -38,11 +38,10 @@ namespace TollFeeCalculatorTests
         [DynamicData(nameof(DatesAndPrices), DynamicDataSourceType.Method)]
         public void TullFeePassTest(string dateString, int fee)
         {
+            var date = DateTime.ParseExact(dateString, "yyyy,MM,dd,HH,mm", CultureInfo.InvariantCulture);
             var expected = fee;
-            var actual = CalculateTollFee.TollFeePass(
-                DateTime.ParseExact(dateString, "yyyy,MM,dd,HH,mm", CultureInfo.InvariantCulture)
-            );
-                
+            var actual = CalculateTollFee.TollFeePass(date);
+
             Assert.AreEqual(expected, actual);
         }
 
