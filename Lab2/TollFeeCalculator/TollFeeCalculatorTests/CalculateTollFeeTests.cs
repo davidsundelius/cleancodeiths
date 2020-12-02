@@ -54,7 +54,7 @@ namespace TollFeeCalculatorTests
         {
             var date = DateTime.ParseExact(dateString, "yyyy,MM,dd,HH,mm", CultureInfo.InvariantCulture);
             var expected = fee;
-            var actual = CalculateTollFee.TollFeePass(date);
+            var actual = CalculateTollFee.GetTollFee(date);
 
             Assert.AreEqual(expected, actual);
         }
@@ -79,8 +79,7 @@ namespace TollFeeCalculatorTests
         {
             var date = DateTime.ParseExact(dateString, "yyyy,MM,dd,HH,mm", CultureInfo.InvariantCulture);
             var expected = isFreeDate;
-            var actual = CalculateTollFee.free(date);
-
+            var actual = CalculateTollFee.isFreeFeeDay(date);
             Assert.AreEqual(expected, actual);
         }
 

@@ -6,55 +6,79 @@ namespace TollFeeCalculator
     {
         static void Main()
         {
+            Console.WriteLine(GetTollFeeByTime(new DateTime(2020, 6, 30, 16, 50, 00)));
             run(Environment.CurrentDirectory + "../../../../testData.txt");
         }
 
-        public static void run(String inputFile) {
-            string indata = System.IO.File.ReadAllText(inputFile);
-            String[] dateStrings = indata.Split(", ");
-            DateTime[] dates = new DateTime[dateStrings.Length-1];
-            for(int i = 0; i < dates.Length; i++) {
-                dates[i] = DateTime.Parse(dateStrings[i]);
+        public static void run(string passingDatesFile)
+        {
+            string passingDatesString = System.IO.File.ReadAllText(passingDatesFile);
+            string[] passingDatesStringArray = passingDatesString.Split(", ");
+            DateTime[] passingDates = new DateTime[passingDatesStringArray.Length - 1];
+            for (int i = 0; i < passingDates.Length; i++)
+            {
+                passingDates[i] = DateTime.Parse(passingDatesStringArray[i]);
             }
-            Console.Write("The total fee for the inputfile is " + TotalFeeCost(dates));
+            Console.Write("The total fee for the inputfile is " + TotalFeeCost(passingDates));
         }
 
-        public static int TotalFeeCost(DateTime[] d) {
+        public static int TotalFeeCost(DateTime[] dateTimes)
+        {
             int fee = 0;
-            DateTime si = d[0]; //Starting interval
-            foreach (var d2 in d)
+            DateTime startDate = dateTimes[0]; //Starting interval
+            foreach (var date in dateTimes)
             {
-                long diffInMinutes = (d2 - si).Minutes;
-                if(diffInMinutes > 60) {
-                    fee += TollFeePass(d2);
-                    si = d2;
-                } else {
-                    fee += Math.Max(TollFeePass(d2), TollFeePass(si));
+                long diffInMinutes = (date - startDate).Minutes;
+                if (diffInMinutes > 60)
+                {
+                    fee += GetTollFee(date);
+                    startDate = date;
+                }
+                else
+                {
+                    fee += Math.Max(GetTollFee(date), GetTollFee(startDate));
                 }
             }
             return Math.Max(fee, 60);
         }
 
-        public static int TollFeePass(DateTime d)
+        public static int GetTollFee(DateTime dateTime)
         {
-            if (free(d)) return 0;
-            int hour = d.Hour;
-            int minute = d.Minute;
-            if (hour == 6 && minute >= 0 && minute <= 29) return 8;
-            else if (hour == 6 && minute >= 30 && minute <= 59) return 13;
-            else if (hour == 7 && minute >= 0 && minute <= 59) return 18;
-            else if (hour == 8 && minute >= 0 && minute <= 29) return 13;
-            else if (hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) return 8;
-            else if (hour == 15 && minute >= 0 && minute <= 29) return 13;
-            else if (hour == 15 && minute >= 0 || hour == 16 && minute <= 59) return 18;
-            else if (hour == 17 && minute >= 0 && minute <= 59) return 13;
-            else if (hour == 18 && minute >= 0 && minute <= 29) return 8;
-            else return 0;
+            int fee = GetTollFeeByTime(dateTime);
+            if (isFreeFeeDay(dateTime)) fee = 0;
+
+            return fee;
         }
 
-        //Gets free dates
-        public static bool free(DateTime day) {
-        return (int)day.DayOfWeek == 5 || (int)day.DayOfWeek == 6 || day.Month == 7;
+        private static int GetTollFeeByTime(in DateTime dateTime)
+        {
+            var time = dateTime.TimeOfDay;
+            foreach(var period in feeSchedule)
+            {
+                if (time < period.endTime) return period.fee;
+            }
+            return 0;
+        }
+
+        private static readonly FeeSchedule[] feeSchedule =
+        {
+            new FeeSchedule(new TimeSpan(6,0,0), 0),
+            new FeeSchedule(new TimeSpan(6,30,0), 8),
+            new FeeSchedule(new TimeSpan(7,0,0), 13),
+            new FeeSchedule(new TimeSpan(8,0,0), 18),
+            new FeeSchedule(new TimeSpan(8,30,0), 13),
+            new FeeSchedule(new TimeSpan(15,0,0), 8),
+            new FeeSchedule(new TimeSpan(15,30,0), 13),
+            new FeeSchedule(new TimeSpan(17,0,0), 18),
+            new FeeSchedule(new TimeSpan(18,0,0), 13),
+            new FeeSchedule(new TimeSpan(18,30,0), 8),
+        };
+
+        public static bool isFreeFeeDay(DateTime dateTime)
+        {
+            return (int)dateTime.DayOfWeek == 6 
+                || (int)dateTime.DayOfWeek == 0 
+                || (int)dateTime.Month == 7;
         }
     }
 }
