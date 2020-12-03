@@ -7,10 +7,10 @@ namespace TollFeeCalculator
         static void Main()
         {
             Console.WriteLine(GetTollFeeByTime(new DateTime(2020, 6, 30, 16, 50, 00)));
-            run(Environment.CurrentDirectory + "../../../../testData.txt");
+            PrintTollFee(Environment.CurrentDirectory + "../../../../testData.txt");
         }
 
-        public static void run(string passingDatesFile)
+        public static void PrintTollFee(string passingDatesFile)
         {
             string passingDatesString = System.IO.File.ReadAllText(passingDatesFile);
             string[] passingDatesStringArray = passingDatesString.Split(", ");
@@ -19,10 +19,10 @@ namespace TollFeeCalculator
             {
                 passingDates[i] = DateTime.Parse(passingDatesStringArray[i]);
             }
-            Console.Write("The total fee for the inputfile is " + TotalFeeCost(passingDates));
+            Console.Write("The total fee for the inputfile is " + GetTotalTollFeeCost(passingDates));
         }
 
-        public static int TotalFeeCost(DateTime[] dateTimes)
+        public static int GetTotalTollFeeCost(DateTime[] dateTimes)
         {
             int fee = 0;
             DateTime startDate = dateTimes[0]; //Starting interval
@@ -31,21 +31,21 @@ namespace TollFeeCalculator
                 long diffInMinutes = (date - startDate).Minutes;
                 if (diffInMinutes > 60)
                 {
-                    fee += GetTollFee(date);
+                    fee += GetTollFeeByDate(date);
                     startDate = date;
                 }
                 else
                 {
-                    fee += Math.Max(GetTollFee(date), GetTollFee(startDate));
+                    fee += Math.Max(GetTollFeeByDate(date), GetTollFeeByDate(startDate));
                 }
             }
             return Math.Max(fee, 60);
         }
 
-        public static int GetTollFee(DateTime dateTime)
+        public static int GetTollFeeByDate(DateTime dateTime)
         {
             int fee = GetTollFeeByTime(dateTime);
-            if (isFreeFeeDay(dateTime)) fee = 0;
+            if (IsTollFreeDate(dateTime)) fee = 0;
 
             return fee;
         }
@@ -74,7 +74,7 @@ namespace TollFeeCalculator
             new FeeSchedule(new TimeSpan(18,30,0), 8),
         };
 
-        public static bool isFreeFeeDay(DateTime dateTime)
+        public static bool IsTollFreeDate(DateTime dateTime)
         {
             return (int)dateTime.DayOfWeek == 6 
                 || (int)dateTime.DayOfWeek == 0 
