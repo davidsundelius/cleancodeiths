@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TollFeeCalculator
 {
     public class CalculateTollFee
     {
-        static void Main()
+        private static void Main()
         {
             PrintTotalTollFeeFromFile(Environment.CurrentDirectory + "../../../../testData.txt");
         }
@@ -26,7 +25,7 @@ namespace TollFeeCalculator
                 Environment.Exit(0);
             }
         }
-        
+
         private static DateTime[] GetDatesArrayFromFile(string filePath)
         {
             string[] passingDates;
@@ -34,7 +33,6 @@ namespace TollFeeCalculator
             {
                 passingDates = System.IO.File.ReadAllText(filePath)
                 .Split(", ");
-
             }
             catch (Exception)
             {
@@ -85,7 +83,7 @@ namespace TollFeeCalculator
         public static int GetTollFeeByTime(in DateTime passageDate)
         {
             var passingTime = passageDate.TimeOfDay;
-            foreach(var period in TollFee.feeSchedule)
+            foreach (var period in TollFee.feeSchedule)
             {
                 if (passingTime < period.endTime) return period.fee;
             }
@@ -94,8 +92,8 @@ namespace TollFeeCalculator
 
         public static bool IsDateTollFree(DateTime passingDate)
         {
-            return (int)passingDate.DayOfWeek == 6 
-                || (int)passingDate.DayOfWeek == 0 
+            return (int)passingDate.DayOfWeek == 6
+                || (int)passingDate.DayOfWeek == 0
                 || (int)passingDate.Month == 7;
         }
     }
