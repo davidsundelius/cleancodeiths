@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TollFeeCalculator
 {
@@ -6,79 +7,96 @@ namespace TollFeeCalculator
     {
         static void Main()
         {
-            Console.WriteLine(GetTollFeeByTime(new DateTime(2020, 6, 30, 16, 50, 00)));
-            PrintTollFee(Environment.CurrentDirectory + "../../../../testData.txt");
+            PrintTotalTollFeeFromFile(Environment.CurrentDirectory + "../../../../testData.txt");
         }
 
-        public static void PrintTollFee(string passingDatesFile)
+        //TODO Return message if path is not found or content is empty or not convertable. DONE!
+
+        public static void PrintTotalTollFeeFromFile(string passingDatesFilePath)
         {
-            string passingDatesString = System.IO.File.ReadAllText(passingDatesFile);
-            string[] passingDatesStringArray = passingDatesString.Split(", ");
-            DateTime[] passingDates = new DateTime[passingDatesStringArray.Length - 1];
-            for (int i = 0; i < passingDates.Length; i++)
+            try
             {
-                passingDates[i] = DateTime.Parse(passingDatesStringArray[i]);
+                DateTime[] passingDates = GetDatesArrayFromFile(passingDatesFilePath);
+                int totalFee = GetTotalTollFeeCost(passingDates);
+                Console.Write($"The total fee for the inputfile is {totalFee}");
             }
-            Console.Write("The total fee for the inputfile is " + GetTotalTollFeeCost(passingDates));
-        }
-
-        public static int GetTotalTollFeeCost(DateTime[] dateTimes)
-        {
-            int fee = 0;
-            DateTime startDate = dateTimes[0]; //Starting interval
-            foreach (var date in dateTimes)
+            catch (Exception)
             {
-                long diffInMinutes = (date - startDate).Minutes;
-                if (diffInMinutes > 60)
-                {
-                    fee += GetTollFeeByDate(date);
-                    startDate = date;
-                }
-                else
-                {
-                    fee += Math.Max(GetTollFeeByDate(date), GetTollFeeByDate(startDate));
-                }
+                Console.Write($"The toll fee could not be calculated");
+                Environment.Exit(0);
             }
-            return Math.Max(fee, 60);
         }
-
-        public static int GetTollFeeByDate(DateTime dateTime)
+        
+        private static DateTime[] GetDatesArrayFromFile(string filePath)
         {
-            int fee = GetTollFeeByTime(dateTime);
-            if (IsTollFreeDate(dateTime)) fee = 0;
-
-            return fee;
-        }
-
-        private static int GetTollFeeByTime(in DateTime dateTime)
-        {
-            var time = dateTime.TimeOfDay;
-            foreach(var period in feeSchedule)
+            string[] passingDates;
+            try
             {
-                if (time < period.endTime) return period.fee;
+                passingDates = System.IO.File.ReadAllText(filePath)
+                .Split(", ");
+
+            }
+            catch (Exception)
+            {
+                passingDates = new string[] { string.Empty };
+            }
+            DateTime[] parsedPassingDates = new DateTime[passingDates.Length - 1];
+            for (int i = 0; i < parsedPassingDates.Length; i++)
+            {
+                parsedPassingDates[i] = DateTime.Parse(passingDates[i]);
+            }
+            Array.Sort(parsedPassingDates);
+            return parsedPassingDates;
+        }
+
+        public static int GetTotalTollFeeCost(DateTime[] passageDates)
+        {
+            if (passageDates.Length == 0)
+            {
+                return 0;
+            }
+            int TotalTollFeeCost = 0;
+            DateTime oneHourPeriodEndTime = passageDates[0].AddHours(1);
+            int oneHourPeriodFee = 0;
+            foreach (DateTime passageDate in passageDates)
+            {
+                if (passageDate < oneHourPeriodEndTime)
+                {
+                    int passageDateFee = GetTollFeeByDate(passageDate);
+                    int periodFeeMargin = passageDateFee - oneHourPeriodFee;
+                    oneHourPeriodFee = Math.Max(passageDateFee, oneHourPeriodFee);
+                    TotalTollFeeCost += Math.Max(periodFeeMargin, 0);
+                    continue;
+                }
+                oneHourPeriodEndTime = passageDate.AddHours(1);
+                oneHourPeriodFee = GetTollFeeByDate(passageDate);
+                TotalTollFeeCost += oneHourPeriodFee;
+            }
+            return Math.Min(TotalTollFeeCost, 60);
+        }
+
+        public static int GetTollFeeByDate(DateTime passageDate)
+        {
+            int tollFeeByDate = GetTollFeeByTime(passageDate);
+            if (IsDateTollFree(passageDate)) tollFeeByDate = 0;
+            return tollFeeByDate;
+        }
+
+        public static int GetTollFeeByTime(in DateTime passageDate)
+        {
+            var passingTime = passageDate.TimeOfDay;
+            foreach(var period in TollFee.feeSchedule)
+            {
+                if (passingTime < period.endTime) return period.fee;
             }
             return 0;
         }
 
-        private static readonly FeeSchedule[] feeSchedule =
+        public static bool IsDateTollFree(DateTime passingDate)
         {
-            new FeeSchedule(new TimeSpan(6,0,0), 0),
-            new FeeSchedule(new TimeSpan(6,30,0), 8),
-            new FeeSchedule(new TimeSpan(7,0,0), 13),
-            new FeeSchedule(new TimeSpan(8,0,0), 18),
-            new FeeSchedule(new TimeSpan(8,30,0), 13),
-            new FeeSchedule(new TimeSpan(15,0,0), 8),
-            new FeeSchedule(new TimeSpan(15,30,0), 13),
-            new FeeSchedule(new TimeSpan(17,0,0), 18),
-            new FeeSchedule(new TimeSpan(18,0,0), 13),
-            new FeeSchedule(new TimeSpan(18,30,0), 8),
-        };
-
-        public static bool IsTollFreeDate(DateTime dateTime)
-        {
-            return (int)dateTime.DayOfWeek == 6 
-                || (int)dateTime.DayOfWeek == 0 
-                || (int)dateTime.Month == 7;
+            return (int)passingDate.DayOfWeek == 6 
+                || (int)passingDate.DayOfWeek == 0 
+                || (int)passingDate.Month == 7;
         }
     }
 }
