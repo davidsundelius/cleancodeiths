@@ -37,7 +37,7 @@ namespace TollFeeCalculatorTests
 
         internal static readonly DateTime[] passageDates = new[]
         {
-            new DateTime(2020,6,30,00,50,0),
+            new DateTime(2020,6,30,00,5,0),
             new DateTime(2020,6,30,06,34,00),
             new DateTime(2020,6,30,08,52,00),
             new DateTime(2020,6,30,10,13,00),
