@@ -6,18 +6,18 @@ namespace TollFeeCalculator
     {
         private static void Main()
         {
-            PrintTotalTollFeeFromFile(Environment.CurrentDirectory + "../../../../testData.txt");
+            PrintTotalTollFeeFromFile(Environment.CurrentDirectory +
+             "../../../../testData.txt");
         }
-
-        //TODO Return message if path is not found or content is empty or not convertable. DONE!
 
         public static void PrintTotalTollFeeFromFile(string passingDatesFilePath)
         {
             try
             {
-                DateTime[] passingDates = GetDatesArrayFromFile(passingDatesFilePath);
+                DateTime[] passingDates =
+                    GetDatesArrayFromFile(passingDatesFilePath);
                 int totalFee = GetTotalTollFeeCost(passingDates);
-                Console.Write($"The total fee for the inputfile is {totalFee}");
+                Console.Write($"The total fee for the input file is {totalFee}");
             }
             catch (Exception)
             {
@@ -38,7 +38,8 @@ namespace TollFeeCalculator
             {
                 passingDates = new string[] { string.Empty };
             }
-            DateTime[] parsedPassingDates = new DateTime[passingDates.Length - 1];
+            DateTime[] parsedPassingDates = 
+                new DateTime[passingDates.Length - 1];
             for (int i = 0; i < parsedPassingDates.Length; i++)
             {
                 parsedPassingDates[i] = DateTime.Parse(passingDates[i]);

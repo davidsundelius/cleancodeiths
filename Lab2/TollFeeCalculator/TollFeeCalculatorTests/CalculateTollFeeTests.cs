@@ -20,20 +20,11 @@ namespace TollFeeCalculatorTests
                     Environment.CurrentDirectory +
                     "../../../../../TollFeeCalculator/testData.txt"
                 );
-                string expected = "The total fee for the inputfile is 55";
+                string expected = "The total fee for the input file is 55";
                 string actual = stringWriter.ToString();
                 Assert.AreEqual(expected, actual);
             }
         }
-
-        //[TestMethod]
-        //public void GetTotalTollFeeCostTest()
-        //{
-        //    DateTime[] passageDates = CalculateTollFeeTests.passageDates;
-        //    int expected = 55;
-        //    int actual = CalculateTollFee.GetTotalTollFeeCost(passageDates);
-        //    Assert.AreEqual(expected, actual);
-        //}
 
         [DataTestMethod]
         [DynamicData(nameof(GetDatesArrays), DynamicDataSourceType.Method)]
@@ -50,7 +41,9 @@ namespace TollFeeCalculatorTests
         [DynamicData(nameof(GetDatesAndPrices), DynamicDataSourceType.Method)]
         public void GetTollFeeByDateTest(string dateString, int fee)
         {
-            DateTime passageDate = DateTime.ParseExact(dateString, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+            DateTime passageDate = DateTime.ParseExact(dateString,
+                "yyyy-MM-dd HH:mm",                                
+                CultureInfo.InvariantCulture);
             int expected = fee;
             int actual = CalculateTollFee.GetTollFeeByDate(passageDate);
             Assert.AreEqual(expected, actual);
@@ -60,7 +53,9 @@ namespace TollFeeCalculatorTests
         [DynamicData(nameof(GetTimesAndPrices), DynamicDataSourceType.Method)]
         public void GetTollFeeByTimeTest(string dateString, int fee)
         {
-            DateTime passageDate = DateTime.ParseExact(dateString, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+            DateTime passageDate = DateTime.ParseExact(dateString,
+                "yyyy-MM-dd HH:mm",
+                CultureInfo.InvariantCulture);
             int expected = fee;
             int actual = CalculateTollFee.GetTollFeeByTime(passageDate);
 
@@ -71,7 +66,9 @@ namespace TollFeeCalculatorTests
         [DynamicData(nameof(GetTollFreeDates), DynamicDataSourceType.Method)]
         public void IsDateTollFreeTest(string dateString, bool isFreeDate)
         {
-            DateTime passageDate = DateTime.ParseExact(dateString, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+            DateTime passageDate = DateTime.ParseExact(dateString,
+                "yyyy-MM-dd HH:mm",
+                CultureInfo.InvariantCulture);
             bool expected = isFreeDate;
             bool actual = CalculateTollFee.IsDateTollFree(passageDate);
             Assert.AreEqual(expected, actual);
@@ -108,25 +105,11 @@ namespace TollFeeCalculatorTests
             yield return new object[] { "2020-12-02 10:13", 8 };
         }
 
-        //internal static readonly DateTime[] passageDates = new[]
-        //{
-        //    new DateTime(2020,6,30,00,5,0),
-        //    new DateTime(2020,6,30,06,34,00),
-        //    new DateTime(2020,6,30,08,52,00),
-        //    new DateTime(2020,6,30,10,13,00),
-        //    new DateTime(2020,6,30,10,25,00),
-        //    new DateTime(2020,6,30,11,4,00),
-        //    new DateTime(2020,6,30,16,50,00),
-        //    new DateTime(2020,6,30,18,0,00),
-        //    new DateTime(2020,6,30,21,30,00),
-        //    new DateTime(2020,7,01,00,0,00)
-        //};
-
         internal static IEnumerable<object[]> GetDatesArrays()
         {
-            yield return new object[] 
-            { 
-                new DateTime[] 
+            yield return new object[]
+            {
+                new DateTime[]
                 {
                     new DateTime(2020,6,30,00,5,0),
                     new DateTime(2020,6,30,06,34,00),
