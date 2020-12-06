@@ -8,6 +8,8 @@ namespace TollFeeCalculator
         {
             PrintTotalTollFeeFromFile(Environment.CurrentDirectory +
              "../../../../testData.txt");
+
+            //PrintTotalTollFeeFromFile(string.Empty);
         }
 
         public static void PrintTotalTollFeeFromFile(string passingDatesFilePath)
@@ -29,15 +31,15 @@ namespace TollFeeCalculator
         private static DateTime[] GetDatesArrayFromFile(string filePath)
         {
             string[] passingDates;
-            try
-            {
+            //try
+            //{
                 passingDates = System.IO.File.ReadAllText(filePath)
                 .Split(", ");
-            }
-            catch (Exception)
-            {
-                passingDates = new string[] { string.Empty };
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    passingDates = new string[] { string.Empty };
+            //}
             DateTime[] parsedPassingDates = 
                 new DateTime[passingDates.Length - 1];
             for (int i = 0; i < parsedPassingDates.Length; i++)

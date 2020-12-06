@@ -72,7 +72,7 @@ namespace TollFeeCalculatorTests
             bool expected = isFreeDate;
             bool actual = CalculateTollFee.IsDateTollFree(passageDate);
             Assert.AreEqual(expected, actual);
-        }
+        }        
 
         #region Test Data Repository
 
