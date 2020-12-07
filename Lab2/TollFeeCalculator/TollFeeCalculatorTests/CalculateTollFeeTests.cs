@@ -13,27 +13,38 @@ namespace TollFeeCalculatorTests
         [TestMethod]
         public void PrintTotalTollFeeFromFileTest()
         {
-            using (StringWriter stringWriter = new StringWriter())
-            {
-                Console.SetOut(stringWriter);
-                CalculateTollFee.PrintTotalTollFeeFromFile(
-                    Environment.CurrentDirectory +
-                    "../../../../../TollFeeCalculator/testData.txt"
-                );
-                string expected = "The total fee for the input file is 55";
-                string actual = stringWriter.ToString();
-                Assert.AreEqual(expected, actual);
-            }
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+            CalculateTollFee.PrintTotalTollFeeFromFile(
+                Environment.CurrentDirectory +
+                "../../../../testData.txt"
+            );
+            string expected = "The total Fee for the input file is 55";
+            string actual = stringWriter.ToString();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void PrintTotalTollFeeFromFileBadContentTest()
+        {
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+            CalculateTollFee.PrintTotalTollFeeFromFile(
+                Environment.CurrentDirectory +
+                "../../../../badTestData.txt"
+            );
+            string expected = "The toll Fee could not be calculated";
+            string actual = stringWriter.ToString();
+            Assert.AreEqual(expected, actual);
         }
 
         [DataTestMethod]
         [DynamicData(nameof(GetDatesArrays), DynamicDataSourceType.Method)]
-        public void GetTotalTollFeeCostTest(DateTime[] dateTimes)
+        public void GetTotalTollFeeTest(DateTime[] dateTimes)
         {
-            var expected = 0;
-            var actual = CalculateTollFee.GetTotalTollFeeCost(dateTimes);
-            if (dateTimes.Length != 0)
-                expected = 55;
+            int expected = 0;
+            int actual = CalculateTollFee.GetTotalTollFee(dateTimes);
+            if (dateTimes.Length != 0) expected = 55;
             Assert.AreEqual(expected, actual);
         }
 
@@ -42,7 +53,7 @@ namespace TollFeeCalculatorTests
         public void GetTollFeeByDateTest(string dateString, int fee)
         {
             DateTime passageDate = DateTime.ParseExact(dateString,
-                "yyyy-MM-dd HH:mm",                                
+                "yyyy-MM-dd HH:mm",
                 CultureInfo.InvariantCulture);
             int expected = fee;
             int actual = CalculateTollFee.GetTollFeeByDate(passageDate);
@@ -72,7 +83,7 @@ namespace TollFeeCalculatorTests
             bool expected = isFreeDate;
             bool actual = CalculateTollFee.IsDateTollFree(passageDate);
             Assert.AreEqual(expected, actual);
-        }        
+        }
 
         #region Test Data Repository
 
@@ -109,7 +120,7 @@ namespace TollFeeCalculatorTests
         {
             yield return new object[]
             {
-                new DateTime[]
+                new []
                 {
                     new DateTime(2020,6,30,00,5,0),
                     new DateTime(2020,6,30,06,34,00),
