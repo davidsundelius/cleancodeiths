@@ -8,6 +8,16 @@ namespace ObserverPattern
         {
             var publisher = new Publisher();
             var subscribers = new Subscriber[] {new Subscriber(), new Subscriber(), new Subscriber()};
+
+            foreach (var subscriber in subscribers)
+            {
+                publisher.AddSubscriber(subscriber);
+            }
+            
+            publisher.PostNewMessage("Secret message");
+            
+            
+            /*
             
             foreach (var subscriber in subscribers)
             {
@@ -22,7 +32,7 @@ namespace ObserverPattern
             foreach (var subscriber in subscribers)
             {
                 subscriber.pollAndPrintMessage(publisher);
-            }
+            }*/
         }
     }
 }

@@ -19,10 +19,8 @@ namespace VisitorPattern
             cities[2].area = 77;
             cities[2].founded = 1250;
             cities[2].population = 321845;
-            foreach (var city in cities)
-            {
-                Console.WriteLine(city.exportToJson());
-            }
+            var cv = new CityVisitor();
+            Console.Write(cv.SerializeCitiesToJson(cities));
         }
     }
 }

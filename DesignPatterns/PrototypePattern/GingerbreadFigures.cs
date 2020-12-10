@@ -12,12 +12,17 @@ namespace PrototypePattern
             gingerbreadMan.decoration = "none";
             gingerbreadMan.width = 100.0;
             gingerbreadMan.height = 100.0;
-            var gingerbreadWomen = new Gingerbread();
-            gingerbreadWomen.shape = "human";
+            var gingerbreadWomen = gingerbreadMan.Clone();
             gingerbreadWomen.name = "Greta";
-            gingerbreadWomen.decoration = "none";
-            gingerbreadWomen.width = 100.0;
-            gingerbreadWomen.height = 100.0;
+
+
+
+            /*new Gingerbread();
+        gingerbreadWomen.shape = "human";
+        gingerbreadWomen.name = "Greta";
+        gingerbreadWomen.decoration = "none";
+        gingerbreadWomen.width = 100.0;
+        gingerbreadWomen.height = 100.0;*/
         }
     }
 }

@@ -12,5 +12,16 @@ namespace PrototypePattern
         {
             
         }
+
+        public Gingerbread Clone()
+        {
+            var clone = new Gingerbread();
+            clone.decoration = this.decoration;
+            clone.height = this.height;
+            clone.width = this.width;
+            clone.name = this.name;
+            clone.shape = this.shape;
+            return clone;
+        }
     }
 }

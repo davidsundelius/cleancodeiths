@@ -5,20 +5,27 @@ namespace TemplatePattern
     public class ArraySorter
     {
         private int[] array;
+
+        public void InitializeSortAndPrintArray()
+        {
+            initializeArray();
+            sortArray();
+            printArray();
+        }
         
-        public void initializeArray()
+        private void initializeArray()
         {
             array = new int[] {6, 8, 3, 2, 4, 6, 8, 9};
         }
 
-        public void sortArray()
+        private void sortArray()
         {
             Array.Sort(array);
         }
 
-        public void printArray()
+        private void printArray()
         {
-            Console.WriteLine(array);
+            Console.WriteLine(string.Join(", ", array));
         }
     }
 }

@@ -14,9 +14,9 @@ namespace VisitorPattern
             
         }
 
-        public string exportToJson()
+        /*public string exportToJson()
         {
             return JsonSerializer.Serialize(this);
-        }
+        }*/
     }
 }

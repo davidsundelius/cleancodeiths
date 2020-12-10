@@ -7,9 +7,7 @@ namespace TemplatePattern
         static void Main(string[] args)
         {
             var arraySorter = new ArraySorter();
-            arraySorter.initializeArray();
-            arraySorter.sortArray();
-            arraySorter.printArray();
+            arraySorter.InitializeSortAndPrintArray();
         }
     }
 }
