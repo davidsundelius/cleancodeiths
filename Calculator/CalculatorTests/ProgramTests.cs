@@ -32,21 +32,19 @@ namespace CalculatorTests
                 //Assert
                 var expected = string.Format("Hello World{0}", Environment.NewLine);
                 Assert.AreEqual(expected, sw.ToString());
-                
             }
         }
 
         [TestMethod]
-        /*public void ReadLineTest()
+        public void ReadLineTest()
         {
-            using (StringReader sr = new StringReader("Hello World"))
+            using (StringReader sr = new StringReader("Hello World" + Environment.NewLine + "Hello"))
             {
                 var program = new Program();
                 Console.SetIn(sr);
                 Assert.AreEqual("Hello World",program.ReadLine());
             }
-            
-        }*/
+        }
         
         public void ReadLineTest()
         {

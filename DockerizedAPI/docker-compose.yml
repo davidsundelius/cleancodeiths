@@ -1,0 +1,16 @@
+version: '3.4'
+services:
+  backend:
+    image: ${DOCKER_REGISTRY-}dockerizedapi
+    build:
+      context: ./DockerizedApi
+      dockerfile: Dockerfile
+  frontend:
+    image: ${DOCKER_REGISTRY-}dockerizedfrontend
+    ports:
+      - "80:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: ./DockerizedFrontend
+      dockerfile: Dockerfile
